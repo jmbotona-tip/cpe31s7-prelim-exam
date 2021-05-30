@@ -1,6 +1,6 @@
 ---
 - name: Plays for all the VMs
-  hosts: target
+  hosts: all
 
   tasks:
   - name: Change motd
