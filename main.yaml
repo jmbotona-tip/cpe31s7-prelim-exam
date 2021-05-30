@@ -1,0 +1,38 @@
+---
+- name: Plays for all the VMs
+  hosts: target
+
+  tasks:
+  - name: Change motd
+    lineinfile:
+      path: '/etc/motd'
+      line: 'Ansible Managed by 1812502'
+      state: present
+
+  - name: Create a user with your github user name and password PrelimExam
+    user:
+      name: jmbotona-tip
+      state: present
+      password: PrelimExam
+
+  - name: Should be passwordless sudoer user
+    lineinfile:
+      path: '/etc/sudoers'
+      line: 'jmbotona-tip ALL=(ALL) NOPASSWD: ALL'
+      state: present
+
+  - name: Create a group named sysad2
+    group:
+      name: sysad2
+      state: present
+
+  - name: Add EPEL repository
+    ansible.builtin.dnf:
+      name: epel-release
+      state: latest
+    when: ansible_distribution == "CentOS"
+
+  - name: Install htop package
+    ansible.builtin.dnf:
+      name: htop
+      state: latest
